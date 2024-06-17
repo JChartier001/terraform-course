@@ -1,9 +1,7 @@
-
 data "aws_ami" "ubuntu" {
 
   most_recent = true
   owners      = ["099720109477"] //Owner is Canonical
-  provider = aws.us_east
 
   filter {
     name   = "name"
@@ -17,8 +15,36 @@ data "aws_ami" "ubuntu" {
 
 }
 
-output "ubuntu_ami_data" {
+data "aws_caller_identity" "current" {
+
+}
+
+data "aws_region" "current" {
+
+}
+
+output "aws_caller_identity" {
+  value = data.aws_caller_identity.current
+}
+
+output "aws_region" {
+  value = data.aws_region.current
+}
+
+output "ubuntu_ami_data_east_2" {
   value = data.aws_ami.ubuntu
+}
+resource "aws_instance" "web" {
+  ami                         = data.aws_ami.ubuntu.id
+  associate_public_ip_address = true
+  instance_type               = "t2.micro"
+
+  root_block_device {
+    delete_on_termination = true
+    volume_size           = 10
+    volume_type           = "gp3"
+  }
+
 }
 # resource "aws_instance" "web" {
 #   ami                         = ubuntu_ami_data.id
