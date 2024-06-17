@@ -1,0 +1,3 @@
+bucket = "terraform-course-remote-backend"
+key    = "05-partial-backends/prod/state.tfstate"
+region = "us-east-2"
