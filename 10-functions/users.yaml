@@ -1,0 +1,5 @@
+users:
+  - name: Jen
+    role: developer
+  - name: Bob
+    role: auditor
