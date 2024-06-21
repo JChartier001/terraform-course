@@ -1,0 +1,15 @@
+# users = {
+# username: string
+# roles: (readonly | developer | admin | auditor)[]
+#}[]
+
+# using group instead of role will give user all the permissions of the group, roles will only give the role that is being used.
+
+
+users:
+  - username: john
+    roles: [readonly, developer]
+  - username: jane
+    roles: [admin, auditor]
+  - username: bob
+    roles: [readonly]
