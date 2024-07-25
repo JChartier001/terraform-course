@@ -16,23 +16,27 @@ resource "aws_lambda_function" "this" {
   function_name = "manually-created-lambda"
   handler       = "index.handler"
 
-  role    = "arn:aws:iam::891376936920:role/service-role/manually-created-lambda-role-dgk8hzsk"
+  role    = aws_iam_role.lambda_execution_role.arn
   runtime = "nodejs18.x"
 
-  source_code_hash = null
+  source_code_hash = data.archive_file.lambda_code.output_base64sha256
   tags = {
     "lambda-console:blueprint" = "hello-world"
   }
 
-  timeout = 3
-  ephemeral_storage {
-    size = 512
-  }
   logging_config {
 
     log_format = "Text"
-    log_group  = "/aws/lambda/manually-created-lambda"
+    log_group  = aws_cloudwatch_log_group.lambda.name
 
   }
+
+}
+
+resource "aws_lambda_function_url" "this" {
+  function_name = aws_lambda_function.this.function_name
+
+  authorization_type = "NONE"
+
 
 }
